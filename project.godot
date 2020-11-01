@@ -13,14 +13,13 @@ config_version=4
 config/name="VRM Project"
 run/main_scene="res://Alicia.tscn"
 config/icon="res://icon.png"
-enabled=PoolStringArray( "vrm" )
+enabled=PackedStringArray( "vrm" )
 
 [editor_plugins]
 
-enabled=PoolStringArray( "vrm" )
+enabled=PackedStringArray( "vrm" )
 
 [rendering]
 
 quality/skinning/software_skinning_fallback=false
 quality/filters/msaa=3
-environment/default_environment="res://default_env.tres"

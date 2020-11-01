@@ -1,8 +1,8 @@
 extends Resource
 
 
-export var spring_bones: Array
-export var collider_groups: Array
+@export var spring_bones: Array
+@export var collider_groups: Array
 
 
 # Called when the node enters the scene tree for the first time.

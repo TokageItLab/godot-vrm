@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorSceneImporter
 
 
@@ -60,7 +60,7 @@ func _import_animation(path: String, flags: int, bake_fps: int) -> Animation:
 	return Animation.new()
 
 
-func _process_khr_material(orig_mat: SpatialMaterial, gltf_mat_props: Dictionary) -> Material:
+func _process_khr_material(orig_mat: StandardMaterial3D, gltf_mat_props: Dictionary) -> Material:
 	# VRM spec requires support for the KHR_materials_unlit extension.
 	if gltf_mat_props.has("extensions"):
 		# TODO: Implement this extension upstream.
@@ -90,7 +90,7 @@ func _vrm_get_float(vrm_mat_props: Dictionary, key: String, def: float) -> float
 	return vrm_mat_props["floatProperties"].get(key, def)
 
  
-func _process_vrm_material(orig_mat: SpatialMaterial, gltf_images: Array, vrm_mat_props: Dictionary) -> Material:
+func _process_vrm_material(orig_mat: StandardMaterial3D, gltf_images: Array, vrm_mat_props: Dictionary) -> Material:
 	var vrm_shader_name:String = vrm_mat_props["shader"]
 	if vrm_shader_name == "VRM_USE_GLTFSHADER":
 		return orig_mat # It's already correct!
@@ -111,9 +111,9 @@ func _process_vrm_material(orig_mat: SpatialMaterial, gltf_images: Array, vrm_ma
 			orig_mat.uv1_offset = maintex_info["offset"]
 			orig_mat.uv1_scale = maintex_info["scale"]
 		orig_mat.flags_unshaded = true
-		orig_mat.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALWAYS
+		orig_mat.params_depth_draw_mode = StandardMaterial3D.DEPTH_DRAW_ALWAYS
 		orig_mat.flags_no_depth_test = false
-		orig_mat.params_blend_mode = SpatialMaterial.BLEND_MODE_MIX
+		orig_mat.params_blend_mode = StandardMaterial3D.BLEND_MODE_MIX
 		return orig_mat
 
 	if vrm_shader_name != "VRM/MToon":
@@ -238,7 +238,7 @@ func _update_materials(vrm_extension: Dictionary, gstate: GLTFState):
 				printerr("Mesh " + str(i) + " material " + str(surf_idx) + " name " + surfmat.resource_name + " has no replacement material.")
 
 
-func poolintarray_find(arr: PoolIntArray, val: int) -> int:
+func poolintarray_find(arr: PackedInt32Array, val: int) -> int:
 	for i in range(arr.size()):
 		if arr[i] == val:
 			return i
@@ -260,7 +260,7 @@ func _get_skel_godot_node(gstate: GLTFState, nodes: Array, skeletons: Array, ske
 	return null
 
 class SkelBone:
-	var skel: Skeleton
+	var skel: Skeleton3D
 	var bone_name: String
 	
 
@@ -286,7 +286,7 @@ func _create_meta(root_node: Node, animplayer: AnimationPlayer, vrm_extension: D
 	var skeletons = gstate.get_skeletons()
 	var hipsNode: GLTFNode = nodes[human_bone_to_idx["hips"]]
 	var gltfskel: GLTFSkeleton = skeletons[hipsNode.skeleton]
-	var skeleton: Skeleton = _get_skel_godot_node(gstate, nodes, skeletons, hipsNode.skeleton)
+	var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons, hipsNode.skeleton)
 	var skeletonPath: NodePath = root_node.get_path_to(skeleton)
 	root_node.set("vrm_skeleton", skeletonPath)
 
@@ -355,7 +355,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 	var material_name_to_mesh_and_surface_idx: Dictionary = {}
 	for i in range(meshes.size()):
 		var gltfmesh : GLTFMesh = meshes[i]
-		for j in range(gltfmesh.mesh.get_surface_count()):
+		for j in range(int(gltfmesh.mesh.get_surface_count())):
 			material_name_to_mesh_and_surface_idx[gltfmesh.mesh.surface_get_material(j).resource_name] = [i, j]
 			
 	for i in range(nodes.size()):
@@ -363,7 +363,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 		var mesh_idx: int = gltfnode.mesh
 		#print("node idx " + str(i) + " node name " + gltfnode.resource_name + " mesh idx " + str(mesh_idx))
 		if (mesh_idx != -1):
-			var scenenode: MeshInstance = gstate.get_scene_node(i)
+			var scenenode: MeshInstance3D = gstate.get_scene_node(i)
 			mesh_idx_to_meshinstance[mesh_idx] = scenenode
 			#print("insert " + str(mesh_idx) + " node name " + scenenode.name)
 
@@ -373,7 +373,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 		
 		for matbind in shape["materialValues"]:
 			var mesh_and_surface_idx = material_name_to_mesh_and_surface_idx[matbind["materialName"]]
-			var node: MeshInstance = mesh_idx_to_meshinstance[mesh_and_surface_idx[0]]
+			var node: MeshInstance3D = mesh_idx_to_meshinstance[mesh_and_surface_idx[0]]
 			var surface_idx = mesh_and_surface_idx[1]
 
 			var mat: Material = node.get_surface_material(surface_idx)
@@ -405,7 +405,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 				anim.track_insert_key(animtrack, 0.0, newvalue)
 		for bind in shape["binds"]:
 			# FIXME: Is this a mesh_idx or a node_idx???
-			var node: MeshInstance = mesh_idx_to_meshinstance[int(bind["mesh"])]
+			var node: MeshInstance3D = mesh_idx_to_meshinstance[int(bind["mesh"])]
 			var nodeMesh: ArrayMesh = node.mesh;
 			
 			if (bind["index"] < 0 || bind["index"] >= nodeMesh.get_blend_shape_count()):
@@ -466,7 +466,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 			third_person_visibility = 0.0
 		else:
 			continue
-		var node: MeshInstance = mesh_idx_to_meshinstance[int(meshannotation["mesh"])]
+		var node: MeshInstance3D = mesh_idx_to_meshinstance[int(meshannotation["mesh"])]
 		var firstperstrack = firstpersanim.add_track(Animation.TYPE_VALUE)
 		firstpersanim.track_set_path(firstperstrack, str(animplayer.get_parent().get_path_to(node)) + ":visible")
 		firstpersanim.track_insert_key(firstperstrack, 0.0, first_person_visibility)
@@ -481,7 +481,7 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 		var vertdown = firstperson["lookAtVerticalDown"]
 		var leftEyeNode: GLTFNode = nodes[human_bone_to_idx["leftEye"]]
 		var gltfskel: GLTFSkeleton = skeletons[leftEyeNode.skeleton]
-		var skeleton:Skeleton = _get_skel_godot_node(gstate, nodes, skeletons,leftEyeNode.skeleton)
+		var skeleton:Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,leftEyeNode.skeleton)
 		var skeletonPath:NodePath = animplayer.get_parent().get_path_to(skeleton)
 		var leftEyeBone: int = poolintarray_find(gltfskel.joints, human_bone_to_idx["leftEye"])
 		var leftEyePath = str(skeletonPath) + ":" + skeleton.get_bone_name(leftEyeBone)
@@ -568,7 +568,7 @@ func _parse_secondary_node(secondary_node: Node, vrm_extension: Dictionary, gsta
 			collider_group.resource_name = found_node.name
 		else:
 			var gltfskel: GLTFSkeleton = skeletons[gltfnode.skeleton]
-			var skeleton: Skeleton = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
+			var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
 			collider_group.skeleton_or_node = secondary_node.get_path_to(skeleton)
 			collider_group.bone = skeleton.get_bone_name(poolintarray_find(gltfskel.joints, int(cgroup["node"])))
 			collider_group.resource_name = collider_group.bone
@@ -587,7 +587,7 @@ func _parse_secondary_node(secondary_node: Node, vrm_extension: Dictionary, gsta
 		var first_bone_node: int = sbone["bones"][0]
 		var gltfnode: GLTFNode = nodes[int(first_bone_node)]
 		var gltfskel: GLTFSkeleton = skeletons[gltfnode.skeleton]
-		var skeleton: Skeleton = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
+		var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
 
 		var spring_bone = vrm_springbone.new()
 		spring_bone.skeleton = secondary_node.get_path_to(skeleton)
@@ -663,7 +663,7 @@ func _import_scene(path: String, flags: int, bake_fps: int):
 
 	if chunk_type != 0x4E4F534A:
 		return ERR_PARSE_ERROR
-	var json_data : PoolByteArray = f.get_buffer(chunk_length)
+	var json_data : PackedByteArray = f.get_buffer(chunk_length)
 	f.close()
 
 	var text : String = json_data.get_string_from_utf8()
@@ -710,7 +710,7 @@ func _import_scene(path: String, flags: int, bake_fps: int):
 
 		var secondary_node: Node = root_node.get_node("secondary")
 		if secondary_node == null:
-			secondary_node = Spatial.new()
+			secondary_node = Node3D.new()
 			root_node.add_child(secondary_node)
 			secondary_node.set_owner(root_node)
 		
