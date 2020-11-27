@@ -253,7 +253,6 @@ func _get_skel_godot_node(gstate: GLTFState, nodes: Array, skeletons: Array, ske
 	# get_scene_node(skeleton bone) works though might maybe return an attachment.
 	# var skel_node_idx = nodes[gltfskel.roots[0]]
 	# return gstate.get_scene_node(skel_node_idx) # as Skeleton
-	var gltfskel = skeletons[skel_id]
 	for i in range(nodes.size()):
 		if nodes[i].skeleton == skel_id:
 			return gstate.get_scene_node(i)
@@ -284,8 +283,7 @@ class SkelBone:
 func _create_meta(root_node: Node, animplayer: AnimationPlayer, vrm_extension: Dictionary, gstate: GLTFState, human_bone_to_idx: Dictionary) -> Resource:
 	var nodes = gstate.get_nodes()
 	var skeletons = gstate.get_skeletons()
-	var hipsNode: GLTFNode = nodes[human_bone_to_idx.get("hips")]
-	var gltfskel: GLTFSkeleton = skeletons[hipsNode.skeleton]
+	var hipsNode: GLTFNode = nodes[human_bone_to_idx["hips"]]
 	var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons, hipsNode.skeleton)
 	var skeletonPath: NodePath = root_node.get_path_to(skeleton)
 	root_node.set("vrm_skeleton", skeletonPath)
@@ -307,9 +305,11 @@ func _create_meta(root_node: Node, animplayer: AnimationPlayer, vrm_extension: D
 		var fpboneoffsetxyz = firstperson.get("firstPersonBoneOffset") # example: 0,0.06,0
 		eyeOffset = Vector3(fpboneoffsetxyz.get("x"), fpboneoffsetxyz.get("y"), fpboneoffsetxyz.get("z"))
 
+	var gltfnodes: Array = gstate.nodes
+
 	var humanBoneDictionary: Dictionary = {}
 	for humanBoneName in human_bone_to_idx:
-		humanBoneDictionary[humanBoneName] = skeleton.get_bone_name(poolintarray_find(gltfskel.joints, human_bone_to_idx[humanBoneName]))
+		humanBoneDictionary[humanBoneName] = gltfnodes[human_bone_to_idx[humanBoneName]].resource_name
 
 	var vrm_meta: Resource = load("res://addons/vrm/vrm_meta.gd").new()
 
@@ -444,9 +444,8 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 	var head_bone_idx = firstperson.get("firstPersonBone", -1)
 	if (head_bone_idx >= 0):
 		var headNode: GLTFNode = nodes[head_bone_idx]
-		var gltfskel: GLTFSkeleton = skeletons[headNode.skeleton]
 		var skeletonPath:NodePath = animplayer.get_parent().get_path_to(_get_skel_godot_node(gstate, nodes, skeletons, headNode.skeleton))
-		var headBone: int = poolintarray_find(gltfskel.joints, head_bone_idx)
+		var headBone: String = headNode.resource_name
 		var firstperstrack = firstpersanim.add_track(Animation.TYPE_METHOD)
 		firstpersanim.track_set_path(firstperstrack, ".")
 		firstpersanim.track_insert_key(firstperstrack, 0.0, {"method": "TODO_scale_bone", "args": [skeletonPath, headBone, 0.0]})
@@ -481,17 +480,13 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 		var vertup = firstperson.get("lookAtVerticalUp")
 		var vertdown = firstperson.get("lookAtVerticalDown")
 		var leftEyeNode: GLTFNode = nodes[human_bone_to_idx.get("leftEye")]
-		var gltfskel: GLTFSkeleton = skeletons[leftEyeNode.skeleton]
-		var skeleton:Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,leftEyeNode.skeleton)
-		var skeletonPath:NodePath = animplayer.get_parent().get_path_to(skeleton)
-		var leftEyeBone: int = poolintarray_find(gltfskel.joints, human_bone_to_idx.get("leftEye"))
-		var leftEyePath = str(skeletonPath) + ":" + skeleton.get_bone_name(leftEyeBone)
-		var rightEyeNode: GLTFNode = nodes[human_bone_to_idx.get("rightEye")]
-		gltfskel = skeletons[rightEyeNode.skeleton]
+		var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,leftEyeNode.skeleton)
+		var skeletonPath: NodePath = animplayer.get_parent().get_path_to(skeleton)
+		var leftEyePath: String = str(skeletonPath) + ":" + nodes[human_bone_to_idx["leftEye"]].resource_name
+		var rightEyeNode: GLTFNode = nodes[human_bone_to_idx["rightEye"]]
 		skeleton = _get_skel_godot_node(gstate, nodes, skeletons,rightEyeNode.skeleton)
 		skeletonPath = animplayer.get_parent().get_path_to(skeleton)
-		var rightEyeBone: int = poolintarray_find(gltfskel.joints, human_bone_to_idx.get("rightEye"))
-		var rightEyePath = str(skeletonPath) + ":" + skeleton.get_bone_name(rightEyeBone)
+		var rightEyePath:String = str(skeletonPath) + ":" + nodes[human_bone_to_idx["rightEye"]].resource_name
 
 		var anim = animplayer.get_animation("LOOKLEFT")
 		if anim:
@@ -555,91 +550,87 @@ func _parse_secondary_node(secondary_node: Node, vrm_extension: Dictionary, gsta
 	var vrm_collidergroup:GDScript = load("res://addons/vrm/vrm_collidergroup.gd")
 	var vrm_springbone:GDScript = load("res://addons/vrm/vrm_springbone.gd")
 
-	# 		humanBoneDictionary[humanBoneName] = skeleton.get_bone_name(poolintarray_find(gltfskel.joints, human_bone_to_idx[humanBoneName]))
+	var collider_groups: Array = Array()
+	for cgroup in vrm_extension["secondaryAnimation"]["colliderGroups"]:
+		var gltfnode: GLTFNode = nodes[int(cgroup["node"])]
+		var collider_group = vrm_collidergroup.new()
+		collider_group.sphere_colliders = Array() # HACK HACK HACK
+		if gltfnode.skeleton == -1:
+			var found_node: Node = gstate.get_scene_node(int(cgroup["node"]))
+			collider_group.skeleton_or_node = secondary_node.get_path_to(found_node)
+			collider_group.bone = ""
+			collider_group.resource_name = found_node.name
+		else:
+			var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
+			collider_group.skeleton_or_node = secondary_node.get_path_to(skeleton)
+			collider_group.bone = nodes[int(cgroup["node"])].resource_name
+			collider_group.resource_name = collider_group.bone
+		
+		for collider_info in cgroup["colliders"]:
+			var offset_obj = collider_info.get("offset", {"x": 0.0, "y": 0.0, "z": 0.0})
+			var local_pos: Vector3 = Vector3(offset_obj["x"], offset_obj["y"], offset_obj["z"])
+			var radius: float = collider_info.get("radius", 0.0)
+			collider_group.sphere_colliders.append(Plane(local_pos, radius))
+		collider_groups.append(collider_group)
 
-	#var collider_groups: Array = Array()
-	#for cgroup in vrm_extension["secondaryAnimation"]["colliderGroups"]:
-	#	var gltfnode: GLTFNode = nodes[int(cgroup["node"])]
-	#	var collider_group = vrm_collidergroup.new()
-	#	collider_group.sphere_colliders = Array() # HACK HACK HACK
-	#	if gltfnode.skeleton == -1:
-	#		var found_node: Node = gstate.get_scene_node(int(cgroup["node"]))
-	#		collider_group.skeleton_or_node = secondary_node.get_path_to(found_node)
-	#		collider_group.bone = ""
-	#		collider_group.resource_name = found_node.name
-	#	else:
-	#		var gltfskel: GLTFSkeleton = skeletons[gltfnode.skeleton]
-	#		var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
-	#		collider_group.skeleton_or_node = secondary_node.get_path_to(skeleton)
-	#		collider_group.bone = skeleton.get_bone_name(poolintarray_find(gltfskel.joints, int(cgroup["node"])))
-	#		collider_group.resource_name = collider_group.bone
-	#	
-	#	for collider_info in cgroup["colliders"]:
-	#		var offset_obj = collider_info.get("offset", {"x": 0.0, "y": 0.0, "z": 0.0})
-	#		var local_pos: Vector3 = Vector3(offset_obj["x"], offset_obj["y"], offset_obj["z"])
-	#		var radius: float = collider_info.get("radius", 0.0)
-	#		collider_group.sphere_colliders.append(Plane(local_pos, radius))
-	#	collider_groups.append(collider_group)
+	var spring_bones: Array = Array()
+	for sbone in vrm_extension["secondaryAnimation"]["boneGroups"]:
+		if sbone.get("bones", []).size() == 0:
+			continue
+		var first_bone_node: int = sbone["bones"][0]
+		var gltfnode: GLTFNode = nodes[int(first_bone_node)]
+		var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
 
-	#var spring_bones: Array = Array()
-	#for sbone in vrm_extension["secondaryAnimation"]["boneGroups"]:
-	#	if sbone.get("bones", []).size() == 0:
-	#		continue
-	#	var first_bone_node: int = sbone["bones"][0]
-	#	var gltfnode: GLTFNode = nodes[int(first_bone_node)]
-	#	var gltfskel: GLTFSkeleton = skeletons[gltfnode.skeleton]
-	#	var skeleton: Skeleton3D = _get_skel_godot_node(gstate, nodes, skeletons,gltfnode.skeleton)
+		var spring_bone = vrm_springbone.new()
+		spring_bone.skeleton = secondary_node.get_path_to(skeleton)
+		spring_bone.comment = sbone.get("comment", "")
+		spring_bone.stiffness_force = float(sbone.get("stiffiness", 1.0))
+		spring_bone.gravity_power = float(sbone.get("gravityPower", 0.0))
+		var gravity_dir = sbone.get("gravity_dir", {"x": 0.0, "y": -1.0, "z": 0.0})
+		spring_bone.gravity_dir = Vector3(gravity_dir["x"], gravity_dir["y"], gravity_dir["z"])
+		spring_bone.drag_force = float(sbone.get("drag_force", 0.4))
+		spring_bone.hit_radius = float(sbone.get("hitRadius", 0.02))
+		
+		if spring_bone.comment != "":
+			spring_bone.resource_name = spring_bone.comment.split("\n")[0]
+		else:
+			var tmpname: String = ""
+			if sbone["bones"].size() > 1:
+				tmpname += " + " + str(sbone["bones"].size() - 1) + " roots"
+			tmpname = nodes[int(first_bone_node)].resource_name + tmpname
+			spring_bone.resource_name = tmpname
+		
+		spring_bone.collider_groups = Array() # HACK HACK HACK
+		for cgroup_idx in sbone.get("colliderGroups", []):
+			spring_bone.collider_groups.append(collider_groups[int(cgroup_idx)])
 
-	#	var spring_bone = vrm_springbone.new()
-	#	spring_bone.skeleton = secondary_node.get_path_to(skeleton)
-	#	spring_bone.comment = sbone.get("comment", "")
-	#	spring_bone.stiffness_force = float(sbone.get("stiffiness", 1.0))
-	#	spring_bone.gravity_power = float(sbone.get("gravityPower", 0.0))
-	#	var gravity_dir = sbone.get("gravity_dir", {"x": 0.0, "y": -1.0, "z": 0.0})
-	#	spring_bone.gravity_dir = Vector3(gravity_dir["x"], gravity_dir["y"], gravity_dir["z"])
-	#	spring_bone.drag_force = float(sbone.get("drag_force", 0.4))
-	#	spring_bone.hit_radius = float(sbone.get("hitRadius", 0.02))
-	#	
-	#	if spring_bone.comment != "":
-	#		spring_bone.resource_name = spring_bone.comment.split("\n")[0]
-	#	else:
-	#		var tmpname: String = ""
-	#		if sbone["bones"].size() > 1:
-	#			tmpname += " + " + str(sbone["bones"].size() - 1) + " roots"
-	#		tmpname = skeleton.get_bone_name(poolintarray_find(gltfskel.joints, int(first_bone_node))) + tmpname
-	#		spring_bone.resource_name = tmpname
-	#	
-	#	spring_bone.collider_groups = Array() # HACK HACK HACK
-	#	for cgroup_idx in sbone.get("colliderGroups", []):
-	#		spring_bone.collider_groups.append(collider_groups[int(cgroup_idx)])
+		spring_bone.root_bones = Array() # HACK HACK HACK
+		for bone_node in sbone["bones"]:
+			var bone_name:String = nodes[int(bone_node)].resource_name
+			if skeleton.find_bone(bone_name) == -1:
+				# Note that we make an assumption that a given SpringBone object is
+				# only part of a single Skeleton*. This error might print if a given
+				# SpringBone references bones from multiple Skeleton's.
+				printerr("Failed to find node " + str(bone_node) + " in skel " + str(skeleton))
+			else:
+				spring_bone.root_bones.append(bone_name)
 
-	#	spring_bone.root_bones = Array() # HACK HACK HACK
-	#	for bone_node in sbone["bones"]:
-	#		var bone_idx: int = poolintarray_find(gltfskel.joints, int(bone_node))
-	#		if bone_idx == -1:
-	#			# Note that we make an assumption that a given SpringBone object is
-	#			# only part of a single Skeleton*. This error might print if a given
-	#			# SpringBone references bones from multiple Skeleton's.
-	#			printerr("Failed to find node " + str(bone_node) + " in skel " + str(skeleton))
-	#		else:
-	#			spring_bone.root_bones.append(skeleton.get_bone_name(bone_idx))
-
-	#	# Center commonly points outside of the glTF Skeleton, such as the root node.
-	#	spring_bone.center_node = secondary_node.get_path_to(secondary_node)
-	#	spring_bone.center_bone = ""
-	#	var center_node_idx = sbone.get("center", -1)
-	#	if center_node_idx != -1:
-	#		var center_gltfnode: GLTFNode = nodes[int(center_node_idx)]
-	#		var bone_idx: int = poolintarray_find(gltfskel.joints, int(center_node_idx))
-	#		if center_gltfnode.skeleton == gltfnode.skeleton and bone_idx != -1:
-	#			spring_bone.center_bone = skeleton.get_bone_name(bone_idx)
-	#			spring_bone.center_node = NodePath()
-	#		else:
-	#			spring_bone.center_bone = ""
-	#			spring_bone.center_node = secondary_node.get_path_to(gstate.get_scene_node(int(center_node_idx)))
-	#			if spring_bone.center_node == NodePath():
-	#				printerr("Failed to find center scene node " + str(center_node_idx))
-	#				spring_bone.center_node = secondary_node.get_path_to(secondary_node) # Fallback
+		# Center commonly points outside of the glTF Skeleton, such as the root node.
+		spring_bone.center_node = secondary_node.get_path_to(secondary_node)
+		spring_bone.center_bone = ""
+		var center_node_idx = sbone.get("center", -1)
+		if center_node_idx != -1:
+			var center_gltfnode: GLTFNode = nodes[int(center_node_idx)]
+			var bone_name:String = center_gltfnode.resource_name
+			if center_gltfnode.skeleton == gltfnode.skeleton and skeleton.find_bone(bone_name) != -1:
+				spring_bone.center_bone = bone_name
+				spring_bone.center_node = NodePath()
+			else:
+				spring_bone.center_bone = ""
+				spring_bone.center_node = secondary_node.get_path_to(gstate.get_scene_node(int(center_node_idx)))
+				if spring_bone.center_node == NodePath():
+					printerr("Failed to find center scene node " + str(center_node_idx))
+					spring_bone.center_node = secondary_node.get_path_to(secondary_node) # Fallback
 
 	#	spring_bones.append(spring_bone)
 
