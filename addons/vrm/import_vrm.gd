@@ -100,7 +100,7 @@ func _process_vrm_material(orig_mat: StandardMaterial3D, gltf_images: Array, vrm
 		vrm_shader_name == "VRM/UnlitTexture" or
 		vrm_shader_name == "VRM/UnlitCutout" or
 		vrm_shader_name == "VRM/UnlitTransparent"):
-		printerr("Unsupported legacy VRM shader " + vrm_shader_name + " on material " + String(orig_mat.resource_name))
+		printerr("Unsupported legacy VRM shader " + str(vrm_shader_name) + " on material " + str(orig_mat.resource_name))
 		return orig_mat
 
 	var maintex_info: Dictionary = _vrm_get_texture_info(gltf_images, vrm_mat_props, "_MainTex")
@@ -117,16 +117,16 @@ func _process_vrm_material(orig_mat: StandardMaterial3D, gltf_images: Array, vrm
 		return orig_mat
 
 	if vrm_shader_name != "VRM/MToon":
-		printerr("Unknown VRM shader " + vrm_shader_name + " on material " + String(orig_mat.resource_name))
+		printerr("Unknown VRM shader " + str(vrm_shader_name) + " on material " + str(orig_mat.resource_name))
 		return orig_mat
 
 
 	# Enum(Off,0,Front,1,Back,2) _CullMode
-	var vrm_float_properties = vrm_mat_props.get("floatProperties")
-	var outline_width_mode = int(vrm_float_properties.get("_OutlineWidthMode", 0))
-	var blend_mode = int(vrm_float_properties.get("_BlendMode", 0))
-	var cull_mode = int(vrm_float_properties.get("_CullMode", 2))
-	var outl_cull_mode = int(vrm_float_properties.get("_OutlineCullMode", 1))
+
+	var outline_width_mode = int(vrm_mat_props["floatProperties"].get("_OutlineWidthMode", 0))
+	var blend_mode = int(vrm_mat_props["floatProperties"].get("_BlendMode", 0))
+	var cull_mode = int(vrm_mat_props["floatProperties"].get("_CullMode", 2))
+	var outl_cull_mode = int(vrm_mat_props["floatProperties"].get("_OutlineCullMode", 1))
 	if cull_mode == int(CullMode.Front) || (outl_cull_mode != int(CullMode.Front) && outline_width_mode != int(OutlineWidthMode.None)):
 		printerr("VRM Material " + str(orig_mat.resource_name) + " has unsupported front-face culling mode: " +
 			str(cull_mode) + "/" + str(outl_cull_mode))
@@ -409,12 +409,12 @@ func _create_animation_player(animplayer: AnimationPlayer, vrm_extension: Dictio
 			var node: MeshInstance3D = mesh_idx_to_meshinstance[int(bind.get("mesh"))]
 			var nodeMesh: ArrayMesh = node.mesh;
 			
-			if (bind.get("index") < 0 || bind.get("index") >= nodeMesh.get_blend_shape_count()):
+			if (bind["index"] < 0 || bind["index"] >= nodeMesh.get_blend_shape_count()):
 				printerr("Invalid blend shape index in bind " + str(shape) + " for mesh " + str(node.name))
 				continue
 			var animtrack: int = anim.add_track(Animation.TYPE_VALUE)
 			# nodeMesh.set_blend_shape_name(int(bind["index"]), shape["name"] + "_" + str(bind["index"]))
-			anim.track_set_path(animtrack, str(animplayer.get_parent().get_path_to(node)) + ":blend_shapes/" + str(nodeMesh.get_blend_shape_name(int(bind.get("index")))))
+			anim.track_set_path(animtrack, str(animplayer.get_parent().get_path_to(node)) + ":blend_shapes/" + str(nodeMesh.get_blend_shape_name(int(bind["index"]))))
 			var interpolation: int = Animation.INTERPOLATION_LINEAR
 			if shape.has("isBinary") and bool(shape.get("isBinary")):
 				interpolation = Animation.INTERPOLATION_NEAREST
@@ -658,8 +658,6 @@ func _import_scene(path: String, flags: int, bake_fps: int):
 	var json_data : PackedByteArray = f.get_buffer(chunk_length)
 	f.close()
 
-	var text : String = json_data.get_string_from_utf8()
-	read_vrm(text)
 	var gstate : GLTFState = GLTFState.new()
 	var gltf : PackedSceneGLTF = PackedSceneGLTF.new()
 	print(path);
@@ -745,178 +743,3 @@ func _to_material_param_dict(columns: Array, values: Array):
 	for i in range(min(columns.size(), values.size())):
 		dict[columns[i]] = _convert_sql_to_material_param(columns[i], values[i])
 	return dict
-
-func read_vrm(json: String):
-		# Create gdsqlite instance
-	var db : SQLite = SQLite.new();
-	
-	# Open database
-	if db.open_in_memory() == false:
-		return;
-	
-	var query = "";
-	var result = null;
-		
-	query = "CREATE TABLE vrm(id INTEGER, vrm JSON);";
-	db.query(query);
-		
-	db.query_with_args("INSERT INTO vrm(id, vrm) values (1, json(?));", [json])
-	
-	query = """
-	CREATE VIEW vrm_bone AS WITH human_bones AS (
-	SELECT value FROM vrm,
-	json_each(json_extract(\"vrm\", '$.extensions.VRM.humanoid.humanBones'))) SELECT
-	json_extract(value, '$.bone') as name, json_extract(value, '$.node')
-	AS node FROM human_bones;)
-	"""
-	db.query(query)
-
-	query = "CREATE VIEW vrm_def AS SELECT key, value"
-	query += " FROM vrm, json_each(json_extract(\"vrm\", '$.extensions.VRM'));"
-	db.query(query)
-#
-	#  https://modern-sql.com/feature/filter
-	query = """
-		CREATE VIEW vrm_meta AS SELECT
-		MAX(meta.value) FILTER (WHERE meta.key = 'title') as title,
-		MAX(meta.value) FILTER (WHERE meta.key = 'version') as version,
-		MAX(meta.value) FILTER (WHERE meta.key = 'author') as author,
-		MAX(meta.value) FILTER (WHERE meta.key = 'contactInformation') as contact_information,
-		MAX(meta.value) FILTER (WHERE meta.key = 'reference') as reference,
-		MAX(meta.value) FILTER (WHERE meta.key = 'texture') as texture,
-		MAX(meta.value) FILTER (WHERE meta.key = 'allowedUserName') as allowed_user_name,
-		MAX(meta.value) FILTER (WHERE meta.key = 'violentUssageName') as violent_usage_name,
-		MAX(meta.value) FILTER (WHERE meta.key = 'sexualUssageName') as sexual_usage_name,
-		MAX(meta.value) FILTER (WHERE meta.key = 'commercialUssageName') as commercial_usage_name,
-		MAX(meta.value) FILTER (WHERE meta.key = 'otherPermissionUrl') as other_permission_url,
-		MAX(meta.value) FILTER (WHERE meta.key = 'licenseName') as license_name,
-		MAX(meta.value) FILTER (WHERE meta.key = 'otherLicenseUrl') as other_license_url
-		FROM vrm, json_each(json_extract(\"vrm\", '$.extensions.VRM.meta')) as meta;
-		"""
-	db.query(query)
-
-	db.query("""
-	CREATE VIEW vrm_material AS WITH float_properties AS (WITH material_properties AS (
-	SELECT
-		key, value
-	FROM
-		vrm, json_each(json_extract("vrm", '$.extensions.VRM.materialProperties')))
-	SELECT
-		json_extract(material_properties.value, '$.name') as name,
-		json_extract(material_properties.value, '$.shader') as shader,
-		json_extract(material_properties.value, '$.renderQueue') as render_queue,
-		json_extract(material_properties.value, '$.floatProperties') as float_properties,
-		json_extract(material_properties.value, '$.vectorProperties') as vector_properties,
-		json_extract(material_properties.value, '$.textureProperties') as texture_properties,
-		json_extract(material_properties.value, '$.keywordMap') as keyword_map
-	FROM
-		material_properties)
-	SELECT
-		name,
-		shader,
-		render_queue,
-		keyword_map,
-		-- https://modern-sql.com/feature/filter
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_Cutoff') as cutoff,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_BumpScale') as bump_scale,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_ReceiveShadowRate') as recieve_shadow_rate,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_ShadingGradeRate') as shading_grade_rate,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_ShadeShift') as shade_shift,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_ShadeToony') as shade_toony,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_LightColorAttenuation') as light_color_attenuation,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_IndirectLightIntensity') as indirect_light_intensity,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_OutlineWidth') as outline_width,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_OutlineScaledMaxDistance') as outline_scaled_max_distance,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_OutlineLightingMix') as outline_lighting_mix,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_DebugMode') as debug_mode,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_BlendMode') as blend_mode,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_OutlineWidthMode') as outline_width_mode,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_OutlineColorMode') as outline_color_mode,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_CullMode') as cull_mode,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_SrcBlend') as src_blend,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_DstBlend') as dst_blend,
-		MAX(fp.value) FILTER (
-		WHERE fp.key = '_ZWrite') as z_write,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_Color') as color,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_ShadeColor') as shade_color,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_BumpMap') as bump_map,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_ReceiveShadowTexture') as receive_shadow_texture,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_ShadingGradeTexture') as shading_grade_texture,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_SphereAdd') as sphere_add,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_EmissionColor') as emission_color,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_EmissionMap') as emission_map,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_OutlineWidthTexture') as outline_width_texture,
-		MAX(vp.value) FILTER (
-		WHERE vp.key = '_OutlineColor') as outline_color,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_MainTex') as main_tex,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_ShadeTexture') as shade_texture,
-		MAX(tp.value) FILTER (
-		WHERE tp.key = '_SphereAdd') as sphere_add
-	FROM
-		float_properties,
-		json_each(float_properties) as fp,
-		json_each(vector_properties) as vp ,
-		json_each(texture_properties) as tp,
-		json_each(keyword_map) as km
-	GROUP BY
-		name;
-	""")
-	
-#	var vrm_data : SQLiteQuery = db.create_query("SELECT * FROM vrm_material")
-#	var columns: Array = vrm_data.get_columns()
-#	var list_of_materials: Array = vrm_data.execute()
-
-	#for material in list_of_materials:
-	#	var param_dict = _to_material_param_dict(columns, material)
-	#	#print(param_dict)
-	
-	#var dict = make_dict(
-	#print(vrm_data.get_columns())
-	#print()
-	
-	#vrm_data = db.create_query("SELECT * FROM vrm_meta")
-	#print(vrm_data.get_columns())
-	#print(vrm_data.execute())
-	
-	#vrm_data = db.create_query("SELECT * FROM vrm_bone LIMIT 1")
-	#print(vrm_data.get_columns())
-	#print(vrm_data.execute())
-	
-	# Close database
-	db.close();
-	
-	
-
-
-
-
-
