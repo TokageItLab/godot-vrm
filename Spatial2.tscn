@@ -34,8 +34,8 @@ shader_param/_UvAnimScrollY = 0.0
 shader_param/_DebugMode = 0.0
 shader_param/_MToonVersion = 33.0
 
-[node name="Spatial" type="Spatial"]
+[node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
