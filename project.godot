@@ -21,6 +21,8 @@ enabled=PackedStringArray( "vrm" )
 
 [rendering]
 
+quality/screen_filters/msaa=2
+quality/screen_filters/use_debanding=true
 environment/default_environment="res://default_env.tres"
 quality/skinning/software_skinning_fallback=false
 quality/filters/msaa=3
