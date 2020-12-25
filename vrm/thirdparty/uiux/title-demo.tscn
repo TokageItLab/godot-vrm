@@ -2,7 +2,7 @@
 
 [ext_resource path="res://vrm/thirdparty/uiux/godot-vrm-theme.tres" type="Theme" id=1]
 [ext_resource path="res://vrm/thirdparty/uiux/mockup.svg" type="Texture2D" id=2]
-[ext_resource path="res://Alicia.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Stage.tscn" type="PackedScene" id=3]
 
 [node name="Node3D" type="Control"]
 script = null
@@ -61,7 +61,7 @@ __meta__ = {
 script = null
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.258, 1.399 )
+transform = Transform( -1, 0, 3.25841e-07, 0, 1, 0, -3.25841e-07, 0, -1, 0, 1.258, -1.09066 )
 fov = 35.0
 script = null
 
