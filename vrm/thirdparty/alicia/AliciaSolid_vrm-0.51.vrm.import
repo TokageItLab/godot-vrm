@@ -1,6 +1,7 @@
 [remap]
 
 importer="scene"
+importer_version=1
 type="PackedScene"
 path="res://.godot/imported/AliciaSolid_vrm-0.51.vrm-622f46b6ed1ce72b2899d68f724dfb30.scn"
 
@@ -19,9 +20,9 @@ nodes/storage=0
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=false
-meshes/compress=true
 meshes/ensure_tangents=true
 meshes/storage=0
+meshes/generate_lods=true
 meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
@@ -31,6 +32,7 @@ animation/fps=15
 animation/filter_script=""
 animation/storage=false
 animation/keep_custom_tracks=false
+animation/point_parent_bone_to_children=true
 animation/optimizer/enabled=true
 animation/optimizer/max_linear_error=0.05
 animation/optimizer/max_angular_error=0.01

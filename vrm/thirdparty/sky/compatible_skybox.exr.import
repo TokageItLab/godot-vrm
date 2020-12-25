@@ -3,16 +3,15 @@
 importer="texture"
 type="StreamTexture2D"
 path.s3tc="res://.godot/imported/compatible_skybox.exr-914f7e11fa4782813da6f5e4b31dcbd4.s3tc.stex"
-path.etc2="res://.godot/imported/compatible_skybox.exr-914f7e11fa4782813da6f5e4b31dcbd4.etc2.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
+"imported_formats": [ "bptc", "s3tc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://vrm/thirdparty/sky/compatible_skybox.exr"
-dest_files=[ "res://.godot/imported/compatible_skybox.exr-914f7e11fa4782813da6f5e4b31dcbd4.s3tc.stex", "res://.godot/imported/compatible_skybox.exr-914f7e11fa4782813da6f5e4b31dcbd4.etc2.stex" ]
+dest_files=[ "res://.godot/imported/compatible_skybox.exr-914f7e11fa4782813da6f5e4b31dcbd4.s3tc.stex" ]
 
 [params]
 
