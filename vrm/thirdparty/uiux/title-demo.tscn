@@ -68,4 +68,5 @@ script = null
 [node name="Node3D" parent="." instance=ExtResource( 3 )]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.464317, 0.885669, 0, -0.885669, 0.464317, 0, 5.19925, 2.66218 )
 script = null
