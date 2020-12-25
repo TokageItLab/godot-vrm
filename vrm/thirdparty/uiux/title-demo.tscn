@@ -13,43 +13,47 @@ __meta__ = {
 [node name="Overlay" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 27.7495
+offset_top = 3.36353
+offset_right = 27.7495
+offset_bottom = 3.36353
 rect_scale = Vector2( 0.48, 0.48 )
+script = null
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="Label" parent="Overlay"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.77264
+offset_top = -5.25552
+offset_right = 8566.29
+offset_bottom = 217.041
+theme = ExtResource( 1 )
+custom_font_sizes/font_size = 32
+custom_constants/shadow_outline_size = 0
+text = "カストムアバターCustom Avatar VRM"
+structured_text_bidi_override_options = [  ]
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="Label" parent="Overlay"]
-anchor_left = 0.497361
-anchor_top = 3.69709
-anchor_right = 9.44748
-anchor_bottom = 5.0071
-offset_left = 0.482847
-offset_right = 772.483
-offset_bottom = 36.6
-theme = ExtResource( 1 )
-custom_font_sizes/font_size = 64
-text = "カストムアバターCustom Avatar VRM"
-structured_text_bidi_override_options = [  ]
-script = null
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
 [node name="mockup" type="TextureRect" parent="Overlay"]
-modulate = Color( 1, 1, 1, 0.407843 )
+visible = false
+modulate = Color( 1, 1, 1, 0.862745 )
 top_level = true
-offset_left = -20.3532
-offset_top = 68.757
-offset_right = 954.647
-offset_bottom = 664.757
+offset_left = 24.545
+offset_right = 1005.55
+offset_bottom = 599.0
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 1
 script = null
 __meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 

@@ -13,8 +13,16 @@ config_version=4
 config/name="VRM Project"
 run/main_scene="res://vrm/thirdparty/uiux/title-demo.tscn"
 run/low_processor_mode=true
+boot_splash/image="res://vrm/thirdparty/uiux/mockup.svg"
 config/icon="res://icon.png"
 enabled=PackedStringArray( "vrm" )
+
+[display]
+
+window/size/width=1280
+window/size/height=720
+window/dpi/allow_hidpi=true
+window/vsync/vsync_via_compositor=true
 
 [editor_plugins]
 
@@ -25,6 +33,7 @@ enabled=PackedStringArray( "vrm" )
 threads/thread_model=2
 vram_compression/import_etc2=false
 quality/screen_filters/msaa=2
+quality/screen_filters/screen_space_aa=1
 quality/screen_filters/use_debanding=true
 environment/default_environment="res://default_env.tres"
 quality/skinning/software_skinning_fallback=false

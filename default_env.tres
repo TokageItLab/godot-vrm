@@ -11,3 +11,4 @@ sky_material = SubResource( 1 )
 [resource]
 background_mode = 2
 sky = SubResource( 2 )
+sdfgi_y_scale = 2
