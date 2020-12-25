@@ -35,6 +35,6 @@ vram_compression/import_etc2=false
 quality/screen_filters/msaa=2
 quality/screen_filters/screen_space_aa=1
 quality/screen_filters/use_debanding=true
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://vrm/thirdparty/uiux/stage_env.tres"
 quality/skinning/software_skinning_fallback=false
 quality/filters/msaa=3
