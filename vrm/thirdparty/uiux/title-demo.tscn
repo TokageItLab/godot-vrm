@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://vrm/thirdparty/uiux/godot-vrm-theme.tres" type="Theme" id=1]
+
+[node name="RichTextLabel" type="Label"]
+anchor_right = 1.0
+anchor_bottom = 0.985
+theme = ExtResource( 1 )
+custom_font_sizes/font_size = 46
+text = "カストムアバターCustom Avatar VRM"
+structured_text_bidi_override_options = [  ]
+script = null
+__meta__ = {
+"_edit_use_anchors_": true
+}
