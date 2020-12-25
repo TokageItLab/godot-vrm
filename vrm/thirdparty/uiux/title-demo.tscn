@@ -10,7 +10,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LeftBar" type="Control" parent="."]
+[node name="Overlay" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_scale = Vector2( 0.48, 0.48 )
@@ -19,7 +19,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="Label" parent="LeftBar"]
+[node name="RichTextLabel" type="Label" parent="Overlay"]
 anchor_left = 0.497361
 anchor_top = 3.69709
 anchor_right = 9.44748
@@ -36,8 +36,9 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="mockup" type="TextureRect" parent="LeftBar"]
+[node name="mockup" type="TextureRect" parent="Overlay"]
 modulate = Color( 1, 1, 1, 0.407843 )
+top_level = true
 offset_left = -20.3532
 offset_top = 68.757
 offset_right = 954.647

@@ -1,4 +1,4 @@
-extends Resource
+extends Node3D
 
 @export var vrm_skeleton: NodePath
 @export var vrm_animplayer: NodePath

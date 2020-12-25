@@ -1,4 +1,4 @@
-extends Resource
+extends Node3D
 
 
 @export var spring_bones: Array
@@ -13,5 +13,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	for bg in spring_bones:
-		bg._process(delta)
+#	for bg in spring_bones:
+#		bg._process(delta)
+	pass
