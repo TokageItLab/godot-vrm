@@ -8,3 +8,21 @@ script = null
 [node name="short_haired_girl" parent="." instance=ExtResource( 1 )]
 vrm_secondary = null
 vrm_meta = null
+
+[node name="Skeleton3D" parent="short_haired_girl" index="0"]
+vrm_skeleton = null
+vrm_animplayer = null
+vrm_secondary = null
+vrm_meta = null
+
+[node name="Facebaked" parent="short_haired_girl/Skeleton3D" index="0"]
+blend_shapes/morph_2 = 0.99999
+
+[node name="secondary" parent="short_haired_girl" index="1"]
+spring_bones = null
+collider_groups = null
+
+[node name="anim" parent="short_haired_girl" index="2"]
+blend_times = [  ]
+
+[editable path="short_haired_girl"]
