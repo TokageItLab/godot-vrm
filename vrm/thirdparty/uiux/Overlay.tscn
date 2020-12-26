@@ -1,45 +1,48 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://vrm/thirdparty/uiux/godot-vrm-theme.tres" type="Theme" id=1]
-[ext_resource path="res://vrm/thirdparty/uiux/mockups/VRM Viewer Screen Model Inspector.svg" type="Texture2D" id=2]
+[ext_resource path="res://vrm/core/app_control.gd" type="Script" id=4]
 
-[node name="Overlay" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = 6.10352e-05
-rect_min_size = Vector2( 1280, 720 )
+[node name="HBoxContainer" type="HBoxContainer"]
+offset_left = 24.0
+offset_right = 1256.0
+offset_bottom = 748.0
 theme = ExtResource( 1 )
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VRM Viewer Screen Model Inspector" type="TextureRect" parent="."]
-modulate = Color( 1, 1, 1, 0.2 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 70.0747
-offset_top = -3.5038
-offset_right = 1235.07
-offset_bottom = 772.496
-rect_min_size = Vector2( 1483, 907 )
-rect_scale = Vector2( 0.5, 0.5 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 2 )
-expand = true
+[node name="Control" type="Control" parent="."]
+offset_right = 40.0
+offset_bottom = 748.0
+rect_min_size = Vector2( 40, 20 )
 script = null
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="RichTextLabel" type="Label" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -150.0
-offset_bottom = -631.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 44.0
+offset_right = 1231.0
+offset_bottom = 748.0
+script = null
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+offset_right = 1187.0
+offset_bottom = 10.0
+rect_min_size = Vector2( 0, 10 )
+script = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 14.0
+offset_right = 1187.0
+offset_bottom = 69.0
+script = null
+
+[node name="RichTextLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+offset_right = 637.0
+offset_bottom = 55.0
 theme = ExtResource( 1 )
 custom_font_sizes/font_size = 36
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.254902 )
 custom_constants/outline_size = 6
 text = "カスタムアバターCustom Avatar VRM"
@@ -48,3 +51,170 @@ script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Container" type="Control" parent="VBoxContainer/HBoxContainer"]
+offset_left = 641.0
+offset_right = 921.0
+offset_bottom = 55.0
+rect_min_size = Vector2( 280, 50 )
+script = null
+
+[node name="Label" type="Button" parent="VBoxContainer/HBoxContainer"]
+offset_left = 925.0
+offset_right = 987.0
+offset_bottom = 55.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+text = "CLOSE"
+flat = true
+script = ExtResource( 4 )
+
+[node name="Label2" type="Button" parent="VBoxContainer/HBoxContainer"]
+offset_left = 991.0
+offset_right = 1072.0
+offset_bottom = 55.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+disabled = true
+text = "REFRESH"
+flat = true
+script = null
+
+[node name="Label3" type="Button" parent="VBoxContainer/HBoxContainer"]
+offset_left = 1076.0
+offset_right = 1187.0
+offset_bottom = 55.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+disabled = true
+text = "FULLSCREEN"
+flat = true
+script = ExtResource( 4 )
+
+[node name="Control2" type="Control" parent="VBoxContainer"]
+offset_top = 73.0
+offset_right = 1187.0
+offset_bottom = 83.0
+rect_min_size = Vector2( 0, 10 )
+script = null
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+offset_top = 87.0
+offset_right = 1187.0
+offset_bottom = 123.0
+custom_font_sizes/font_size = 20
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+text = "▲ Model Inspector Material Channel [6]"
+uppercase = true
+structured_text_bidi_override_options = [  ]
+script = null
+
+[node name="Control3" type="Control" parent="VBoxContainer"]
+offset_top = 127.0
+offset_right = 1187.0
+offset_bottom = 147.0
+rect_min_size = Vector2( 0, 20 )
+script = null
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 151.0
+offset_right = 1187.0
+offset_bottom = 458.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control2" type="Label" parent="VBoxContainer/HBoxContainer3"]
+offset_right = 110.0
+offset_bottom = 307.0
+rect_min_size = Vector2( 0, 300 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+text = "O Geometry
+
+O Matcap
+
+O Wireframe
+
+O Vertex
+
+O Normals
+
+O Base Color
+
+O Emission"
+structured_text_bidi_override_options = [  ]
+script = null
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer3"]
+offset_left = 114.0
+offset_right = 1094.0
+offset_bottom = 307.0
+rect_min_size = Vector2( 980, 0 )
+script = null
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+offset_left = 1098.0
+offset_top = 92.0
+offset_right = 1168.0
+offset_bottom = 215.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
+custom_constants/outline_size = 2
+text = "Animate
+
+Inspect
+
+Help"
+align = 2
+structured_text_bidi_override_options = [  ]
+script = null
+
+[node name="Control4" type="Control" parent="VBoxContainer"]
+offset_top = 462.0
+offset_right = 1187.0
+offset_bottom = 472.0
+rect_min_size = Vector2( 0, 10 )
+script = null
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 476.0
+offset_right = 1187.0
+offset_bottom = 694.0
+script = null
+
+[node name="RichTextLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+offset_right = 544.0
+offset_bottom = 218.0
+theme = ExtResource( 1 )
+custom_font_sizes/font_size = 32
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.254902 )
+custom_constants/outline_size = 6
+text = "License Info
+Personal / Commercial Use
+Copyright iFire
+This avatar supports holding hands
+Author Name"
+structured_text_bidi_override_options = [  ]
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control5" type="Control" parent="VBoxContainer"]
+offset_top = 698.0
+offset_right = 1187.0
+offset_bottom = 708.0
+rect_min_size = Vector2( 0, 10 )
+script = null
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Label" to="VBoxContainer/HBoxContainer/Label" method="_quit"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Label3" to="VBoxContainer/HBoxContainer/Label3" method="_toggle_fullscreen"]

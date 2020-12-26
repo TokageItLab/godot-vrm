@@ -13,20 +13,28 @@ config_version=4
 config/name="VRM Project"
 run/main_scene="res://vrm/thirdparty/uiux/title-demo.tscn"
 run/low_processor_mode=true
-boot_splash/image="res://vrm/thirdparty/uiux/mockup.svg"
+boot_splash/use_filter=false
 config/icon="res://icon.png"
 enabled=PackedStringArray( "vrm" )
 
 [display]
 
 window/size/width=1280
-window/size/height=720
+window/size/height=729
+window/size/resizable=false
 window/dpi/allow_hidpi=true
 window/vsync/vsync_via_compositor=true
+window/subwindows/embed_subwindows=true
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
 enabled=PackedStringArray( "vrm" )
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
