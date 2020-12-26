@@ -1,28 +1,10 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://vrm/thirdparty/short_haired/short_haired_girl_2020_12_25.vrm" type="PackedScene" id=1]
+[ext_resource path="res://vrm/thirdparty/alicia/AliciaSolid_vrm-0.51.vrm" type="PackedScene" id=1]
 
 [node name="Node3D" type="Node3D"]
 script = null
 
-[node name="short_haired_girl" parent="." instance=ExtResource( 1 )]
+[node name="AliciaSolid_vrm-051" parent="." instance=ExtResource( 1 )]
 vrm_secondary = null
 vrm_meta = null
-
-[node name="Skeleton3D" parent="short_haired_girl" index="0"]
-vrm_skeleton = null
-vrm_animplayer = null
-vrm_secondary = null
-vrm_meta = null
-
-[node name="Facebaked" parent="short_haired_girl/Skeleton3D" index="0"]
-blend_shapes/morph_2 = 0.99999
-
-[node name="secondary" parent="short_haired_girl" index="1"]
-spring_bones = null
-collider_groups = null
-
-[node name="anim" parent="short_haired_girl" index="2"]
-blend_times = [  ]
-
-[editable path="short_haired_girl"]
