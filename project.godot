@@ -19,12 +19,11 @@ enabled=PackedStringArray( "vrm" )
 
 [display]
 
-window/size/width=1280
-window/size/height=729
+window/size/width=1600
+window/size/height=900
 window/size/resizable=false
 window/dpi/allow_hidpi=true
 window/vsync/vsync_via_compositor=true
-window/subwindows/embed_subwindows=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 

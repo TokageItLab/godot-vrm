@@ -3,48 +3,65 @@
 [ext_resource path="res://vrm/thirdparty/uiux/godot-vrm-theme.tres" type="Theme" id=1]
 [ext_resource path="res://vrm/core/app_control.gd" type="Script" id=4]
 
-[node name="HBoxContainer" type="HBoxContainer"]
-offset_left = 24.0
-offset_right = 1256.0
-offset_bottom = 748.0
+[node name="AspectRatioContainer" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -49.0
+offset_bottom = 13.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+offset_right = 1551.0
+offset_bottom = 913.0
 theme = ExtResource( 1 )
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="CenterContainer/HBoxContainer"]
 offset_right = 40.0
-offset_bottom = 748.0
+offset_bottom = 913.0
 rect_min_size = Vector2( 40, 20 )
 script = null
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
 offset_left = 44.0
-offset_right = 1231.0
-offset_bottom = 748.0
+offset_right = 1551.0
+offset_bottom = 913.0
 script = null
 
-[node name="Control" type="Control" parent="VBoxContainer"]
-offset_right = 1187.0
+[node name="Control" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_right = 1507.0
 offset_bottom = 10.0
 rect_min_size = Vector2( 0, 10 )
+size_flags_horizontal = 3
 script = null
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/HBoxContainer/VBoxContainer"]
 offset_top = 14.0
-offset_right = 1187.0
-offset_bottom = 69.0
+offset_right = 1507.0
+offset_bottom = 94.0
 script = null
 
-[node name="RichTextLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="RichTextLabel" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+offset_top = 12.0
 offset_right = 637.0
-offset_bottom = 55.0
+offset_bottom = 67.0
 theme = ExtResource( 1 )
 custom_font_sizes/font_size = 36
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.254902 )
-custom_constants/outline_size = 6
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
 text = "カスタムアバターCustom Avatar VRM"
 structured_text_bidi_override_options = [  ]
 script = null
@@ -52,29 +69,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Container" type="Control" parent="VBoxContainer/HBoxContainer"]
+[node name="Container" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 offset_left = 641.0
-offset_right = 921.0
-offset_bottom = 55.0
-rect_min_size = Vector2( 280, 50 )
+offset_right = 1241.0
+offset_bottom = 80.0
+rect_min_size = Vector2( 600, 80 )
 script = null
 
-[node name="Label" type="Button" parent="VBoxContainer/HBoxContainer"]
-offset_left = 925.0
-offset_right = 987.0
-offset_bottom = 55.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="Label" type="Button" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+offset_left = 1245.0
+offset_right = 1307.0
+offset_bottom = 80.0
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "CLOSE"
 flat = true
 script = ExtResource( 4 )
 
-[node name="Label2" type="Button" parent="VBoxContainer/HBoxContainer"]
-offset_left = 991.0
-offset_right = 1072.0
-offset_bottom = 55.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="Label2" type="Button" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+offset_left = 1311.0
+offset_right = 1392.0
+offset_bottom = 80.0
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 disabled = true
@@ -82,11 +99,11 @@ text = "REFRESH"
 flat = true
 script = null
 
-[node name="Label3" type="Button" parent="VBoxContainer/HBoxContainer"]
-offset_left = 1076.0
-offset_right = 1187.0
-offset_bottom = 55.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+[node name="Label3" type="Button" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+offset_left = 1396.0
+offset_right = 1507.0
+offset_bottom = 80.0
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 disabled = true
@@ -94,47 +111,47 @@ text = "FULLSCREEN"
 flat = true
 script = ExtResource( 4 )
 
-[node name="Control2" type="Control" parent="VBoxContainer"]
-offset_top = 73.0
-offset_right = 1187.0
-offset_bottom = 83.0
+[node name="Control2" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 98.0
+offset_right = 1507.0
+offset_bottom = 108.0
 rect_min_size = Vector2( 0, 10 )
+size_flags_horizontal = 3
 script = null
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-offset_top = 87.0
-offset_right = 1187.0
-offset_bottom = 123.0
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 112.0
+offset_right = 1507.0
+offset_bottom = 148.0
 custom_font_sizes/font_size = 20
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
-custom_constants/outline_size = 2
-text = "▲ Model Inspector Material Channel [6]"
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
+text = "▲ Model Inspector / Material Channel [6]"
 uppercase = true
 structured_text_bidi_override_options = [  ]
 script = null
 
-[node name="Control3" type="Control" parent="VBoxContainer"]
-offset_top = 127.0
-offset_right = 1187.0
-offset_bottom = 147.0
+[node name="Control3" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 152.0
+offset_right = 1507.0
+offset_bottom = 172.0
 rect_min_size = Vector2( 0, 20 )
 script = null
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 151.0
-offset_right = 1187.0
-offset_bottom = 458.0
+[node name="HBoxContainer3" type="HBoxContainer" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 176.0
+offset_right = 1507.0
+offset_bottom = 483.0
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control2" type="Label" parent="VBoxContainer/HBoxContainer3"]
+[node name="Control2" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer3"]
 offset_right = 110.0
 offset_bottom = 307.0
 rect_min_size = Vector2( 0, 300 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Geometry
@@ -153,19 +170,21 @@ O Emission"
 structured_text_bidi_override_options = [  ]
 script = null
 
-[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer3"]
+[node name="Control" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer3"]
 offset_left = 114.0
-offset_right = 1094.0
+offset_right = 1433.0
 offset_bottom = 307.0
 rect_min_size = Vector2( 980, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = null
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
-offset_left = 1098.0
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer3"]
+offset_left = 1437.0
 offset_top = 92.0
-offset_right = 1168.0
+offset_right = 1507.0
 offset_bottom = 215.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "Animate
@@ -177,27 +196,29 @@ align = 2
 structured_text_bidi_override_options = [  ]
 script = null
 
-[node name="Control4" type="Control" parent="VBoxContainer"]
-offset_top = 462.0
-offset_right = 1187.0
-offset_bottom = 472.0
-rect_min_size = Vector2( 0, 10 )
+[node name="Control4" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 487.0
+offset_right = 1507.0
+offset_bottom = 667.0
+rect_min_size = Vector2( 0, 180 )
+size_flags_horizontal = 11
+size_flags_vertical = 11
 script = null
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 476.0
-offset_right = 1187.0
-offset_bottom = 694.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 671.0
+offset_right = 1507.0
+offset_bottom = 889.0
+grow_horizontal = 0
 script = null
 
-[node name="RichTextLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="RichTextLabel" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 offset_right = 544.0
 offset_bottom = 218.0
 theme = ExtResource( 1 )
 custom_font_sizes/font_size = 32
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.254902 )
-custom_constants/outline_size = 6
+custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
 text = "License Info
 Personal / Commercial Use
 Copyright iFire
@@ -209,12 +230,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control5" type="Control" parent="VBoxContainer"]
-offset_top = 698.0
-offset_right = 1187.0
-offset_bottom = 708.0
-rect_min_size = Vector2( 0, 10 )
+[node name="Control5" type="Control" parent="CenterContainer/HBoxContainer/VBoxContainer"]
+offset_top = 893.0
+offset_bottom = 913.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_horizontal = 2
+size_flags_vertical = 2
 script = null
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Label" to="VBoxContainer/HBoxContainer/Label" method="_quit"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Label3" to="VBoxContainer/HBoxContainer/Label3" method="_toggle_fullscreen"]
+[connection signal="pressed" from="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label" to="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label" method="_quit"]
+[connection signal="pressed" from="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label3" to="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label3" method="_toggle_fullscreen"]
