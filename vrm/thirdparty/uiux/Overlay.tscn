@@ -11,6 +11,9 @@ offset_bottom = 13.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_right = 40.0
@@ -21,9 +24,8 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-offset_top = 329.0
 offset_right = 1551.0
-offset_bottom = 1185.0
+offset_bottom = 856.0
 theme = ExtResource( 1 )
 script = null
 __meta__ = {
@@ -61,7 +63,7 @@ offset_right = 637.0
 offset_bottom = 67.0
 theme = ExtResource( 1 )
 custom_font_sizes/font_size = 36
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
 text = "カスタムアバターCustom Avatar VRM"
 structured_text_bidi_override_options = [  ]
@@ -81,7 +83,7 @@ script = null
 offset_left = 1245.0
 offset_right = 1307.0
 offset_bottom = 80.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "CLOSE"
@@ -92,7 +94,7 @@ script = ExtResource( 4 )
 offset_left = 1311.0
 offset_right = 1392.0
 offset_bottom = 80.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 disabled = true
@@ -104,7 +106,7 @@ script = null
 offset_left = 1396.0
 offset_right = 1507.0
 offset_bottom = 80.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 disabled = true
@@ -125,7 +127,7 @@ offset_top = 112.0
 offset_right = 1507.0
 offset_bottom = 148.0
 custom_font_sizes/font_size = 20
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
 text = "▲ Model Inspector"
 uppercase = true
@@ -146,7 +148,7 @@ offset_bottom = 426.0
 script = null
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4"]
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 250.0
 rect_min_size = Vector2( 122, 250 )
 size_flags_horizontal = 3
@@ -155,7 +157,7 @@ scroll_horizontal_enabled = false
 script = null
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer"]
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 250.0
 rect_min_size = Vector2( 100, 200 )
 size_flags_horizontal = 3
@@ -163,9 +165,9 @@ size_flags_vertical = 3
 script = null
 
 [node name="Control2" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 31.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Geometry"
@@ -177,9 +179,9 @@ __meta__ = {
 
 [node name="Control3" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 35.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 66.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Matcap"
@@ -191,9 +193,9 @@ __meta__ = {
 
 [node name="Control5" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 70.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 101.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Base Color"
@@ -205,9 +207,9 @@ __meta__ = {
 
 [node name="Control6" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 105.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 136.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Vertex"
@@ -219,9 +221,9 @@ __meta__ = {
 
 [node name="Control7" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 140.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 171.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Normals"
@@ -233,10 +235,10 @@ __meta__ = {
 
 [node name="Control8" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 175.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 207.0
 rect_min_size = Vector2( 0, 32 )
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Base Color"
@@ -248,9 +250,9 @@ __meta__ = {
 
 [node name="Control9" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer/VBoxContainer"]
 offset_top = 211.0
-offset_right = 122.0
+offset_right = 709.0
 offset_bottom = 242.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "O Emission"
@@ -288,7 +290,7 @@ script = null
 [node name="Label" type="Label" parent="CenterContainer/HBoxContainer/VBoxContainer/HBoxContainer4/ScrollContainer2/VBoxContainer"]
 offset_right = 70.0
 offset_bottom = 31.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "Animate"
@@ -303,7 +305,7 @@ __meta__ = {
 offset_top = 35.0
 offset_right = 70.0
 offset_bottom = 66.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "Inspect"
@@ -318,7 +320,7 @@ __meta__ = {
 offset_top = 70.0
 offset_right = 70.0
 offset_bottom = 101.0
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 0.25 )
 custom_constants/outline_size = 2
 text = "Help"
@@ -350,7 +352,7 @@ offset_right = 544.0
 offset_bottom = 218.0
 theme = ExtResource( 1 )
 custom_font_sizes/font_size = 32
-custom_colors/font_color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.1 )
 text = "License Info
 Personal / Commercial Use
